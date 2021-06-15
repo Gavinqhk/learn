@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>threejs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        html,body {margin: 0;}
+        canvas {display: block;}
+    </style>
+</head>
+<body>
+    <script src="three.js"></script>
+    <script src="trackballControls.js"></script>
+    <script>
+        var scene = new THREE.Scene();// 创建场景
+        scene.background = new THREE.Color(0xffffff);
+        
+        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);// 创建相机
+        var renderer = new THREE.WebGLRenderer();// 创建渲染器
+        renderer.setSize(window.innerWidth, window.innerHeight);// 设置渲染大小
+        document.body.appendChild(renderer.domElement);// 将渲染的元素添加到body中
+
+        renderer.shadowMap.enabled = true; // 需要渲染器开启shadowMap
+        var light = new THREE.DirectionalLight(0xffff00, 1);
+        light.position.set(0,1,0);
+        scene.add(light);
+        light.castShadow = true;// 添加对象是否被渲染到阴影贴图中
+
+        var geometry = new THREE.BoxGeometry(1,1,1);// 创建立方体
+        var material = new THREE.MeshBasicMaterial({color: 0x00fff0});// 创建材质
+        // 创建贴图材质
+        // var loader = new THREE.TextureLoader(); 
+        // loader.crossOrigin = '';
+        // var material;
+        // loader.load('./crate.jpg',function(texture) {
+        //     console.log(texture)
+        //     material = new THREE.MeshBasicMaterial({map: texture});
+        // })
+        var cube = new THREE.Mesh(geometry, material);// 网格需要包含创建的立方体和材
+        cube.castShadow = true;// 物体是否可渲染到阴影贴图中
+        scene.add(cube);// 将创建的立方体放置场景中
+        camera.position.set(0, 0, 5);// 设置相机的位置
+
+        var planeGeometry = new THREE.PlaneGeometry(20, 20, 30, 30);// 创建一个平面接受阴影投射
+        var planeMaterial = new THREE.MeshStandardMaterial({color: 0x00fff0});
+        var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+        plane.rotateX(-Math.PI / 2);
+        plane.position.set(0, -1, 0);
+        plane.receiveShadow = true;// 材质是否接收阴影
+        scene.add(plane);
+
+        var v = new THREE.Vector3();
+        v.velocityY = 0.1;
+        console.log(v)
+
+        window.addEventListener('resize', onWindowResize, false);
+        function onWindowResize() {
+            // 重设置宽高比
+            var aspect = window.innerWidth / window.innerHeight;
+            camera.aspect = aspect;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.render(scene, camera);
+        }
+
+        // 创建控制器
+        var controls = new THREE.TrackballControls(camera, renderer.domElement)
+        controls.rotateSpeed = 1.0;
+        controls.zoomSpeed = 1.2;
+        controls.panSpeed = 0.8;
+        controls.addEventListener( 'change', render );
+
+        // 定义动画函数，使立方体动起来
+        function animate () {
+            requestAnimationFrame(animate);// 动画函数
+            cube.rotation.x += 0.01;
+            cube.rotation.y += 0.01;
+            controls.update();// 一定要有这个控制器才有效果
+            render();
+        }
+
+        function render () {
+            renderer.render(scene, camera);// 渲染器渲染场景和相机
+        }
+        animate();
+    </script>
+</body>
+</html>

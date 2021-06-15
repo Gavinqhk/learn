@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="mvvm">
+        <input type="text" v-model="someStr">
+        <input type="text" v-model="child.someStr">
+        <p>data: {{ someStr }} {{ child.someStr }}</p>
+        <p>computed: {{ getHelloWord }}</p>
+        <p v-html="htmlStr"></p>
+        <button v-on:click="clickBtn">change model</button>
+
+        <!-- <input type="text" v-model="word">
+        <p>{{ word }}</p>
+        <button v-on:click="sayHi">change word</button> -->
+    </div>
+
+    <script src="observer.js"></script>
+    <script src="watcher.js"></script>
+    <script src="compile.js"></script>
+    <script src="mvvm.js"></script>
+
+    <script>
+        var vm = new MVVM({
+            el: "#mvvm",
+            data: {
+                someStr: "hello",
+                child: {
+                    someStr: "World!"
+                },
+                htmlStr: "<span style='color: #f00'>red</span>",
+            },
+            computed: {
+                getHelloWord: function() {
+                    return this.someStr + this.child.someStr;
+                },
+                getSomStr: {
+                    get: function() {
+                        return 'computed getSomStr: ' + this.someStr;
+                    },
+                    set: function(newVal) {
+                        this.someStr = newVal;
+                    }
+                }
+            },
+            methods: {
+                clickBtn(e) {
+                    console.log("eeee", e);
+                    const arr = ["childOne", "childTwo", "childThree"];
+                    this.child.someStr = arr[parseInt(Math.random() * 3)];
+                }
+            },
+            // watch: {
+            //     someStr(oldValue, newValue) {
+            //         console.log("someStr arguments", arguments);
+            //     }
+            // }
+        });
+
+        vm.$watch("child.someStr", function() {
+            console.log("child.someStr arguments", arguments);
+        })
+
+        console.log(vm);
+
+    </script>
+</body>
+</html>
