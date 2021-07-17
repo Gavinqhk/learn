@@ -1,5 +1,7 @@
 # new Vue 做了什么事情
+
 new 关键字在JavaScript中代表实例化一个对象，而Vue实际上是一个类，类在JavaScript中是用Function来实现的。
+
 ```js
 function Vue(options) {
     if(process.env.NODE_ENV !== 'production' && !(this instanceof Vue)) {
@@ -7,10 +9,12 @@ function Vue(options) {
     }
     this._init(options);
 }
-
 ```
+
 Vue 只是通过new关键字初始化，并调用_init()方法。
+
 ```js
+
     Vue.prototype._init(options?: object) {
         const vm: Component = this;
         vm._uid = uid++;
@@ -60,6 +64,7 @@ Vue 只是通过new关键字初始化，并调用_init()方法。
     }
 
 ```
+
 Vue初始化主要干了几件事，合并配置，初始化生命周期，初始化事件中心，初始化渲染，初始化props、data、computed、watcher等等。
 
 遗留问题：弄明白上述疑问，以及代码中几个init函数的原理。

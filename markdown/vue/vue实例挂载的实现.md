@@ -1,10 +1,11 @@
 # vue实例挂载的实现
 
-> 涉及到$mount, mountComponent, render, update
-render --> _createElement create vnode
-update --> _patch   finally create dom
+>涉及到$mount, mountComponent, render, update
+render -->_createElement create vnode
+update -->_patch   finally create dom
 
 Vue中我们通过$mount实例方法去挂载vm
+
 ```js
 const mount = Vue.prototype.$mount;//先将vue原型上到$mount函数缓存
 Vue.prototype.$mount = function(
@@ -69,12 +70,12 @@ Vue.prototype.$mount = function(
 }
 
 ```
+
 首先将$mount缓存，再重新定义该方法。它对el做了限制，Vue不能挂载到body，html这样到根结点上。  
-接下来到关键到逻辑：如果没有定义render函数，则将el或template字符串转换成render方法，（render方法将el生成虚拟节点virtualDom）。无论是写了el或template，还是.vue单文件方式开发组件，最终都会转换成render方法。这个过程叫做vue‘在线编译’过程，它是调用compileToFunctions方法实现到。   
+接下来到关键到逻辑：如果没有定义render函数，则将el或template字符串转换成render方法，（render方法将el生成虚拟节点virtualDom）。无论是写了el或template，还是.vue单文件方式开发组件，最终都会转换成render方法。这个过程叫做vue‘在线编译’过程，它是调用compileToFunctions方法实现到。
 最后调用之前缓存到mount方法挂载。
 
-
-### 原型上到$mount方法
+## 原型上到$mount方法
 
 ```js
 //public mount method
@@ -86,8 +87,10 @@ Vue.prototype.$mount = function(
     return mountComponent(this, el, hydrating);
 }
 ```
+
 mount 方法实际上会调用mountComponent方法。
-```js 
+
+```js
 export function mountComponent(
     vm: Component,
     el?: Element,
@@ -160,14 +163,15 @@ export function mountComponent(
     return vm
 }
 ```
+
 mountComponent核心就是实例化一个渲染watcher，在回调函数中执行updateComponent方法，在方法中调用vm._render生成虚拟Node，vm._update更新DOM。  
 
 Watcher在这里起两个作用，一是初始化是会执行回调函数，另一个是当vm实例中的监测数据发生变化时执行回调函数。
 
 函数最后判断为根节点的时候设置 vm._isMounted 为 true， 表示这个实例已经挂载了，同时执行 mounted 钩子函数。 这里注意 vm.$vnode 表示 Vue 实例的父虚拟 Node，所以它为 Null 则表示当前是根 Vue 的实例。
 
-
 ### render 方法
+
 ```js
 Vue.prototype._render = function (): VNode {
   const vm: Component = this
@@ -230,6 +234,7 @@ Vue.prototype._render = function (): VNode {
 ```
 
 createElement() 生成 VNode。
+
 ```js
 // wrapper function for providing a more flexible interface
 // without getting yelled at by flow
@@ -253,7 +258,7 @@ export function createElement (
 }
 ```
 
-createElement 方法实际上是对 _createElement 方法的封装，它允许传入的参数更加灵活，在处理这些参数后，调用真正创建 VNode 的函数 _createElement：
+createElement 方法实际上是对 _createElement 方法的封装，它允许传入的参数更加灵活，在处理这些参数后，调用真正创建 VNode 的函数_createElement：
 
 ```js
 export function _createElement (
@@ -342,13 +347,6 @@ export function _createElement (
 }
 ```
 
-
-
-
-
-
-
-
 ### update方法
 
 Vue的_update是实例一个私有方法，它被调用的2个时机，一是初次渲染，一个是数据更新的时候。
@@ -389,5 +387,3 @@ _update 的核心就是调用 vm.__patch__ 方法,这个方法实际上在不同
 ```Vue.prototype.__patch__ = inBrowser ? patch : noop```
 
 ![挂载过程](https://ustbhuangyi.github.io/vue-analysis/assets/new-vue.png)
-
-

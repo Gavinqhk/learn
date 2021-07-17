@@ -1,4 +1,5 @@
 # es module
+
 [es6 module](https://es6.ruanyifeng.com/#docs/module)
 JavaScript一直没有模块（module）体系，无法将大型的项目拆分成互相依赖的小文件，再用简单的方式拼接起来。其他语言都有这项功能，比如 Ruby 的require、Python 的import，甚至就连 CSS 都有@import，但是 JavaScript 任何这方面的支持都没有，这对开发大型的、复杂的项目形成了巨大障碍。
 
@@ -10,7 +11,7 @@ es6 module 设计思想是尽量的静态化，使得编译时就能确定模块
 
 ## export
 
-## export default 
+## export default
 
 ## import
 
