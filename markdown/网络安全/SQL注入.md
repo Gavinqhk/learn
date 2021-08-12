@@ -1,6 +1,7 @@
 # SQL注入
 
 考虑以下简单的管理员登录表单：
+
 ```r
 <form action="/login" method="POST">
     <p>Username: <input type="text" name="username" /></p>
@@ -28,13 +29,16 @@ let querySQL = `
 ```r
 SELECT * FROM user WHERE username='zoumiaojiang' OR 1 = 1 --' AND psw='xxxx'
 ```
+
 在 SQL 中，-- 是注释后面的内容的意思，所以查询语句就变成了：
+
 ```r
 SELECT * FROM user WHERE username='zoumiaojiang' OR 1 = 1
 ```
+
 这条 SQL 语句的查询条件永远为真，所以意思就是恶意攻击者不用我的密码，就可以登录进我的账号，然后可以在里面为所欲为，
 
-### 防御 SQL 注入的几点注意事项：
+### 防御 SQL 注入的几点注意事项
 
 - 严格限制Web应用的数据库的操作权限，给此用户提供仅仅能够满足其工作的最低权限，从而最大限度的减少注入攻击对数据库的危害
 

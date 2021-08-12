@@ -1,9 +1,10 @@
 # js的执行机制
+
 JavaScript的任务分为两种，1、同步任务，2、异步任务。
-事件循环中涉及到js执行栈，任务队列。 
+事件循环中涉及到js执行栈，任务队列。
 
 js任务调用执行都要进入执行栈。  
-同步任务进入执行栈执行，执行完出栈，后进先出。   
+同步任务进入执行栈执行，执行完出栈，后进先出。
 异步任务分为宏任务，微任务，  
 任务队列分为宏任务队列（macroQueues），微任务队列（microQueues）  
 
@@ -15,9 +16,9 @@ js任务调用执行都要进入执行栈。
 3. 当主线程执行完成（js执行栈的任务执行完），检查微任务队列（micro Queue）是否有任务等待执行，有则一次压入js执行栈执行，无则查看宏任务队列（macroQueue）是否有任务执行，有则执行，无则执行完成。
 4. 当异步任务入栈执行时，可能又会有宏任务，微任务，又会循环以上当操作执行顺序，当宏任务，微任务队列为空，执行栈为空，则说明任务完全执行完。
 
-
 异步任务包括：
 宏任务：
+
 - setTimeout
 - setInterval
 - setImmediate
@@ -25,14 +26,15 @@ js任务调用执行都要进入执行栈。
 - UI rendering
 
 微任务：
+
 - Promise的会调函数
 - process.nextTick()
 - Object.observe()
 - MutationObserver
 
-
 test试一试
 1、
+
 ```js
 console.log('script start');
 
@@ -48,7 +50,9 @@ Promise.resolve().then(function() {
 // browser: script start, promise1, promise2, setTimeout
 // node: script start, promise1, promise2, setTimeout
 ```
+
 2、
+
 ```js
 console.log('1');
 async function async1() {
@@ -98,7 +102,9 @@ console.log('12');
  * 3、同步执行完await的语句，之后的语句进入微任务队列。
 */
 ```
+
 3、
+
 ```js
 console.log('1');
 
