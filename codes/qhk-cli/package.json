@@ -1,0 +1,23 @@
+{
+  "name": "qhk-cli",
+  "version": "1.0.0",
+  "description": "first time to build a qkh-cli",
+  "main": "bin/main.js",
+  "bin": {
+    "qhk": "bin/main.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "qhk",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^8.1.0",
+    "download-git-repo": "^3.0.2",
+    "figlet": "^1.5.2",
+    "inquirer": "^8.1.2",
+    "ora": "^3.4.0"
+  }
+}
